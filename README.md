@@ -33,6 +33,7 @@ Many Agent systems become expensive and unstable because every step is wrapped i
 - `references/review-checklist.md` - Review checklist for Agent workflow designs.
 - `references/router-template.md` - Router pattern and design output template.
 - `agents/openai.yaml` - Agent interface metadata.
+- `docs/Agent-Minimalism-作品说明材料.docx` - Submission document describing the use case, problem, approach, inputs, outputs, and boundaries.
 
 ## Example Use
 
