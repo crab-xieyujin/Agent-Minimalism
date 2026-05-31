@@ -1,7 +1,0 @@
-interface:
-  display_name: "Agent Minimalism"
-  short_description: "Route only uncertainty to Agents."
-  default_prompt: "Use $agent-minimalism to review this workflow and reduce unnecessary Agent, token, and context overhead."
-
-policy:
-  allow_implicit_invocation: true

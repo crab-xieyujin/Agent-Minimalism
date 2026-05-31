@@ -1,83 +1,86 @@
 ---
 name: agent-minimalism
-description: Use when designing, reviewing, or optimizing Agent workflows, AI automations, dynamic workflows, tool-calling pipelines, token-heavy processes, or AI product task orchestration. Helps decide which parts should be rules, templates, scripts, single LLM calls, fixed workflows, local Agents, or full dynamic Agents, with the principle of default workflowization and necessary Agentization.
-metadata:
-  short-description: Minimize Agent use by routing only uncertainty to Agents
+description: |
+  使用场景：设计、评审或优化 Agent 工作流、AI 自动化、动态工作流、工具调用管道、高 token 开销流程或 AI 产品任务编排时使用。
+  帮助判断哪些部分应使用规则、模板、脚本、单次 LLM 调用、固定工作流、局部 Agent 或完整动态 Agent，
+  遵循"默认工作流化，必要时 Agent 化"原则。
+  触发词：Agent 设计、工作流审查、降低 token 消耗、AI 自动化架构、agent minimalism、最小化 Agent。
+agent_created: true
 ---
 
 # Agent Minimalism
 
-Use this skill to turn a task or workflow into the lowest-complexity reliable design.
+使用本 Skill 将任务或工作流转化为最低复杂度的可靠设计。
 
-Core principle:
+核心原则：
 
-> Default to workflowization. Use Agents only where uncertainty genuinely requires them.
+> 默认工作流化。仅在真正存在不确定性时使用 Agent。
 
-Agents should handle uncertainty, exploration, recovery, and open-ended judgment. They should not be the default wrapper around deterministic steps.
+Agent 应处理不确定性、探索、恢复和开放式判断。它们不应该成为包裹确定性步骤的默认外壳。
 
-## When To Apply
+## 适用场景
 
-Apply this skill when the user is:
+在以下情况下使用本 Skill：
 
-- Designing an Agent, AI workflow, automation pipeline, or tool-calling system.
-- Trying to reduce token usage, latency, cost, instability, or context sharing overhead.
-- Converting a fully Agentic process into a mixed workflow.
-- Reviewing whether a dynamic workflow is over-engineered.
-- Building reusable patterns for content production, research, sales ops, customer support, coding tasks, data analysis, or product operations.
+- 设计 Agent、AI 工作流、自动化管道或工具调用系统。
+- 尝试减少 token 用量、延迟、成本、不稳定性或上下文共享开销。
+- 将全量 Agent 流程转换为混合工作流。
+- 评审动态工作流是否过度设计。
+- 构建内容生产、研究、销售运营、客户支持、编码任务、数据分析或产品运营的可复用模式。
 
-## Operating Model
+## 操作模型
 
-Classify each step into the lowest sufficient level:
+将每个步骤分类到最低充分级别：
 
-| Level | Use when | Preferred implementation |
+| 级别 | 适用场景 | 推荐实现方式 |
 |---|---|---|
-| L0 Rule | Inputs, checks, transformations, or outputs are deterministic | Code, config, schema validation, regex, template |
-| L1 Single LLM | Semantic work is needed, but no loop or tool observation is needed | One LLM call with structured output |
-| L2 Fixed Workflow | Multiple steps exist, but the path is mostly known | Pipeline, DAG, state machine |
-| L3 Local Agent | One node is uncertain and may need tools, retries, or judgment | Agent only inside that node |
-| L4 Dynamic Agent | The goal is open-ended and the path cannot be known upfront | Planner, tools, memory, iterative execution |
+| L0 规则 | 输入、检查、转换或输出是确定性的 | 代码、配置、Schema 校验、正则、模板 |
+| L1 单次 LLM | 需要语义处理，但不需要循环或工具观察 | 单次 LLM 调用 + 结构化输出 |
+| L2 固定工作流 | 存在多步骤，但路径基本已知 | Pipeline、DAG、状态机 |
+| L3 局部 Agent | 有一个节点存在不确定性，可能需要工具、重试或判断 | 仅在该节点使用 Agent |
+| L4 动态 Agent | 目标开放，路径无法提前知道 | Planner + 工具 + 记忆 + 迭代执行 |
 
-Rule of thumb:
+经验法则：
 
-> If a lower level can solve it reliably, do not move it to a higher level.
+> 如果低级别能可靠解决，就不要提升到高级别。
 
-## Workflow
+## 工作流程
 
-1. Map the current task chain.
-   - Identify input, output, intermediate artifacts, tools, failure modes, and decision points.
+1. 梳理当前任务链。
+   - 识别输入、输出、中间产物、工具、失败模式和决策点。
 
-2. Separate certainty from uncertainty.
-   - Deterministic: make it code, template, config, validation, or a fixed workflow.
-   - Semantic but bounded: use a single model call.
-   - Uncertain, exploratory, or self-correcting: consider local Agent use.
+2. 分离确定性与不确定性。
+   - 确定性的：做成代码、模板、配置、校验或固定工作流。
+   - 语义但有边界的：使用单次模型调用。
+   - 不确定、探索性或自我修正的：考虑局部 Agent。
 
-3. Route by complexity.
-   - Prefer L0, then L1, then L2, then L3, then L4.
-   - Treat full dynamic Agents as the last resort.
+3. 按复杂度路由。
+   - 优先 L0，其次 L1、L2、L3，最后才是 L4。
+   - 将完整动态 Agent 视为最后手段。
 
-4. Place Agents at exception points.
-   - Use Agents as complex-node handlers or failure recovery handlers.
-   - Avoid putting Agents at the main entrance unless the whole task path is unknown.
+4. 将 Agent 放在异常点。
+   - 将 Agent 用作复杂节点处理器或故障恢复处理器。
+   - 除非整个任务路径未知，否则避免在主入口放置 Agent。
 
-5. Produce a design recommendation.
-   - Show which steps move to rules/workflow/LLM/Agent.
-   - State the uncertainty that justifies each Agent node.
-   - Estimate cost, stability, and token impact qualitatively.
+5. 输出设计建议。
+   - 展示哪些步骤移至规则/工作流/LLM/Agent。
+   - 说明每个 Agent 节点的不确定性依据。
+   - 定性估算成本、稳定性和 token 影响。
 
-## Required Output Shape
+## 输出格式要求
 
-When reviewing or designing, include:
+审查或设计时，输出内容应包括：
 
-- Current workflow diagnosis.
-- Step classification table with L0-L4 labels.
-- Recommended architecture.
-- Agent justification for every Agent node.
-- Token/stability implications.
-- Implementation next steps.
+- 当前工作流诊断。
+- 带 L0-L4 标签的步骤分类表。
+- 推荐架构。
+- 每个 Agent 节点的使用理由。
+- Token 与稳定性影响说明。
+- 下一步实施建议。
 
-Keep the answer practical. The goal is a usable design discipline, not a philosophical essay.
+保持实用。目标是可落地的设计规范，不是哲学论文。
 
-## References
+## 参考文档
 
-- For review criteria, read `references/review-checklist.md`.
-- For reusable router and architecture templates, read `references/router-template.md`.
+- 审查标准，请阅读 `references/review-checklist.md`。
+- 可复用路由器与架构模板，请阅读 `references/router-template.md`。
